@@ -53,7 +53,7 @@ pub(crate) fn response_for_query(
         #[allow(dead_code)]
         type Int = i64;
         #[allow(dead_code)]
-        type ID = String;
+        type ID = ::graphql_client::ID;
 
         #(#scalar_definitions)*
 

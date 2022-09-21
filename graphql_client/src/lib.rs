@@ -299,6 +299,27 @@ pub struct Response<Data> {
     pub extensions: Option<HashMap<String, serde_json::Value>>,
 }
 
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum IdInner {
+    Number(serde_json::Number),
+    String(String),
+}
+
+impl From<IdInner> for ID {
+    fn from(inner: IdInner) -> Self {
+        Self(match inner {
+            IdInner::Number(n) => n.to_string(),
+            IdInner::String(s) => s,
+        })
+    }
+}
+
+/// Workaround for <https://github.com/smashgg/developer-portal/issues/171>
+#[derive(Deserialize)]
+#[serde(from = "IdInner")]
+pub struct ID(pub String);
+
 #[cfg(test)]
 mod tests {
     use super::*;
