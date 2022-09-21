@@ -316,9 +316,15 @@ impl From<IdInner> for ID {
 }
 
 /// Workaround for <https://github.com/smashgg/developer-portal/issues/171>
-#[derive(Deserialize)]
-#[serde(from = "IdInner")]
+#[derive(Clone, Deserialize, Serialize)]
+#[serde(from = "IdInner", into = "String")]
 pub struct ID(pub String);
+
+impl From<ID> for String {
+    fn from(ID(s): ID) -> Self {
+        s
+    }
+}
 
 #[cfg(test)]
 mod tests {
